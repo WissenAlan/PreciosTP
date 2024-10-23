@@ -1,0 +1,35 @@
+1|2141101|97.6373|11|Leche fresca entera sachet
+2|2141101|98.073|10|Leche fresca entera sachet
+3|2141101|110.809|8|Leche fresca entera sachet
+4|2141101|118.736|10|Leche fresca entera sachet
+5|2141101|131.505|10|Leche fresca entera sachet
+6|2141101|132.181|13|Leche fresca entera sachet
+7|2141101|136.592|12|Leche fresca entera sachet
+1|2213103|99.9064|11|Soda en sifón descartable
+2|2213103|110.951|9|Soda en sifón descartable
+3|2213103|113.41|10|Soda en sifón descartable
+4|2213103|119.622|13|Soda en sifón descartable
+5|2213103|127.508|10|Soda en sifón descartable
+6|2213103|129.493|13|Soda en sifón descartable
+7|2213103|134.767|15|Soda en sifón descartable
+1|2223103|659.952|10|Whisky
+2|2223103|710.888|9|Whisky
+3|2223103|717.499|10|Whisky
+4|2223103|740.088|11|Whisky
+5|2223103|784.874|8|Whisky
+6|2223103|760.999|7|Whisky
+7|2223103|824.318|10|Whisky
+1|3211306|262.277|11|Insecticida
+2|3211306|267|10|Insecticida
+3|3211306|293.764|11|Insecticida
+4|3211306|288.855|12|Insecticida
+5|3211306|302.56|11|Insecticida
+6|3211306|333.432|13|Insecticida
+7|3211306|327.958|15|Insecticida
+1|3222105|71.0975|8|Fósforos
+2|3222105|76.5862|8|Fósforos
+3|3222105|75.86|7|Fósforos
+4|3222105|78.197|10|Fósforos
+5|3222105|84.0962|8|Fósforos
+6|3222105|91.4122|9|Fósforos
+7|3222105|101.648|9|Fósforos

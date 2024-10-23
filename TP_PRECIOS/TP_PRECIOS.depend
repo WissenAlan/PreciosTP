@@ -1,0 +1,126 @@
+# depslib dependency file v1.0
+1728528842 source:c:\users\nahia\documents\topicos\trabajo-practico\tp-precios\tp_precios\main.c
+	<stdio.h>
+	<stdlib.h>
+	"Funciones.h"
+
+1728530841 c:\users\nahia\documents\topicos\trabajo-practico\tp-precios\tp_precios\funciones.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1728530884 source:c:\users\nahia\documents\topicos\trabajo-practico\tp-precios\tp_precios\funciones.c
+	"Funciones.h"
+
+1728573190 source:c:\users\user\desktop\tp_precios\tp_precios\main.c
+	<stdio.h>
+	<stdlib.h>
+	"Funciones.h"
+
+1728572543 c:\users\user\desktop\tp_precios\tp_precios\funciones.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<stdbool.h>
+
+1728573266 source:c:\users\user\desktop\tp_precios\tp_precios\funciones.c
+	"Funciones.h"
+
+1729178536 source:c:\users\nahia\documents\topicos\tp_precios\tp_precios\tp_precios\funciones.c
+	"Funciones.h"
+
+1729178550 c:\users\nahia\documents\topicos\tp_precios\tp_precios\tp_precios\funciones.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<stdbool.h>
+
+1729178536 source:c:\users\nahia\documents\topicos\tp_precios\tp_precios\tp_precios\main.c
+	<stdio.h>
+	<stdlib.h>
+	"Funciones.h"
+
+1729182496 source:f:\documetos\unlam\segundo\topicos\recursante\tp_precios\tp_precios\tp_precios\main.c
+	<stdio.h>
+	<stdlib.h>
+	"Funciones.h"
+
+1729183152 f:\documetos\unlam\segundo\topicos\recursante\tp_precios\tp_precios\tp_precios\funciones.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<stdbool.h>
+
+1729183240 source:f:\documetos\unlam\segundo\topicos\recursante\tp_precios\tp_precios\tp_precios\funciones.c
+	"Funciones.h"
+
+1729381101 source:f:\documetos\unlam\segundo\topicos\recursante\tp_precios\main.c
+	<stdio.h>
+	<stdlib.h>
+	"Funciones.h"
+
+1729380955 f:\documetos\unlam\segundo\topicos\recursante\tp_precios\funciones.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<stdbool.h>
+
+1729382931 source:f:\documetos\unlam\segundo\topicos\recursante\tp_precios\funciones.c
+	"Funciones.h"
+
+1729395451 source:c:\users\usuario\downloads\tp_precios4.0\tp_precios\main.c
+	<stdio.h>
+	<stdlib.h>
+	"Funciones.h"
+
+1729395640 c:\users\usuario\downloads\tp_precios4.0\tp_precios\funciones.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<stdbool.h>
+
+1729395625 source:c:\users\usuario\downloads\tp_precios4.0\tp_precios\funciones.c
+	"Funciones.h"
+
+1729561743 source:c:\users\user\desktop\tp_precios 4\tp_precios 4\funciones.c
+	"Funciones.h"
+
+1729560101 c:\users\user\desktop\tp_precios 4\tp_precios 4\funciones.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<stdbool.h>
+
+1729561780 source:c:\users\user\desktop\tp_precios 4\tp_precios 4\main.c
+	<stdio.h>
+	<stdlib.h>
+	"Funciones.h"
+
+1729649680 source:c:\users\usuario\onedrive\documents\proyectos\tp_precios 4\tp_precios 4\tp_precios 4\funciones.c
+	"Funciones.h"
+
+1729636199 c:\users\usuario\onedrive\documents\proyectos\tp_precios 4\tp_precios 4\tp_precios 4\funciones.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<stdbool.h>
+
+1729641037 source:c:\users\usuario\onedrive\documents\proyectos\tp_precios 4\tp_precios 4\tp_precios 4\main.c
+	<stdio.h>
+	<stdlib.h>
+	"Funciones.h"
+
+1729649680 source:f:\documetos\unlam\segundo\topicos\recursante\tp_precios 4.1\tp_precios 4\funciones.c
+	"Funciones.h"
+
+1729636199 f:\documetos\unlam\segundo\topicos\recursante\tp_precios 4.1\tp_precios 4\funciones.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<stdbool.h>
+
+1729641037 source:f:\documetos\unlam\segundo\topicos\recursante\tp_precios 4.1\tp_precios 4\main.c
+	<stdio.h>
+	<stdlib.h>
+	"Funciones.h"
+
