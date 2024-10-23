@@ -339,7 +339,7 @@ int buscarSinPrecio(void* i, Vector *vector)
     Datos *ultDat = vecD + (vector->ce);
     Especificaciones *esp = i;
 
-    while(vecD < ultDat)
+    while(vecD->codProd <= esp->codProd && vecD < ultDat) //Como vecD ya esta ordenado por codProd, si es mayor al buscado no deberia encontrarlo
     {
         if(esp->codProd == vecD->codProd)
             return 1; ////EL PRODUCTO TIENE PRECIO
@@ -357,54 +357,42 @@ int calcularPromedio(const Vector* vecDatos,const Vector* vecEsp, const int vecP
 
     int indice = 0;
     float matriz[12][2] = {0};
-    bool flag = 1, flag2 = 0;
+    bool flag = 1;
     char nombreProd[TAM_NOM];
 
-    void* i = vecDatos->vec;
-    void* ult = vecDatos->vec + (vecDatos->ce * vecDatos->tamElem) - vecDatos->tamElem;
+    Datos* i = vecDatos->vec;
+    Datos* ult = vecDatos->vec + vecDatos->ce*vecDatos->tamElem;
     while(i <= ult)
     {
-        if(((Datos*)i)->codProd == vecPunto5[indice])
+        if(i->codProd == vecPunto5[indice])
         {
-            matriz[((Datos*)i)->mes][0] += ((Datos*)i)->precio;
-            matriz[((Datos*)i)->mes][1]++;
-            if(flag == 1)
-            {
-                void* iEsp = vecEsp->vec;
-                void* ultEsp = vecEsp->vec + (vecEsp->ce * vecEsp->tamElem) - vecEsp->tamElem;
-                while(iEsp <= ultEsp && flag2 == 0)
-                {
-                    if(((Datos*)i)->codProd == ((Especificaciones*)iEsp)->codProd)
-                    {
-                        strcpy(nombreProd,((Especificaciones*)iEsp)->nombreProd);
-                        flag2 = 1;
-                    }
-                    iEsp += vecEsp->tamElem;
-                }
-            }
-            flag = 0;
+            matriz[i->mes][0] += i->precio;
+            matriz[i->mes][1]++;
+            if(flag == 1)//Busca el nombre la primera vez
+                buscarNombre(vecEsp, i->codProd, nombreProd);
+            flag = 0;//Deshabilita la busqueda de nombre
         }
-        else if(((Datos*)i)->codProd != vecPunto5[indice] || i + vecDatos->tamElem > ult)
+        else if(i->codProd != vecPunto5[indice] || i++ > ult)//Si no coinciden los codigos, o si no hay proximo en el vector
         {
             if(flag == 0)
             {
-                flag = 1;
-                indice++;
-                i -= vecDatos->tamElem;
+                flag = 1;//Habilita la busqueda de nombre
+                indice++;//Aumenta el indice para la proxima vuelta
+                i--;//Vuelve uno atras para hacer la impresion por pantalla
             }
-            for(int j = 0;j < 12;j++)
+            for(int j = 0;j < 12;j++)//Hasta que j sea menor a 12 por los 12 meses del año
             {
-                if(matriz[j][1] > 0)
+                if(matriz[j][1] > 0)//Imprime solo si hay algo en la matriz
                 {
-                    matriz[j][0] = matriz[j][0] / matriz[j][1];
-                    fprintf(pf,"%d|%d|%g|%g|%s\n",j,((Datos*)i)->codProd,matriz[j][0],matriz[j][1],nombreProd);
+                    matriz[j][0] = matriz[j][0] / matriz[j][1];//Calculo del promedio
+                    fprintf(pf,"%d|%d|%g|%g|%s\n",j,i->codProd,matriz[j][0],matriz[j][1],nombreProd);//Carga la linea al archivo
+                    //Resetea la posicion
                     matriz[j][0] = 0;
                     matriz[j][1] = 0;
                 }
             }
-            flag2 = 0;
         }
-        i += vecDatos->tamElem;
+        i++;
     }
     fclose(pf);
     return TODO_OK;
@@ -424,4 +412,47 @@ int mostrarPunto5()
     }
     fclose(pf);
     return TODO_OK;
+}
+//PUNTO 6
+
+//PUNTO 7
+void calcularMedidaGeometrica(const Vector* vecDatos,const Vector* vecEsp)
+{
+    Datos *ult = vecDatos->vec + vecDatos->ce;
+    char nombreProd[TAM_NOM];
+    float acum = 0;
+    int codAux = 0,cont = 0;
+    for(Datos *i = vecDatos->vec; i <= ult; i++)
+    {
+        if(cont == 0 || codAux == i->codProd)
+        {
+            acum += log(i->precio);
+            cont++;
+            codAux = i->codProd;
+        }
+        else
+        {
+            buscarNombre(vecEsp,codAux,nombreProd);
+            printf("%d\t%s\t%g\n",codAux,nombreProd,acum);
+            acum = 0;
+            cont = 0;
+            codAux = i->codProd;
+            i--;
+        }
+    }
+}
+int buscarNombre(const Vector* vec,const int codBuscar, char* nombreExp)
+{
+    Especificaciones* iEsp = vec->vec;
+    Especificaciones* ultEsp = vec->vec + vec->ce*vec->tamElem;
+    while(iEsp <= ultEsp)
+    {
+        if(codBuscar == iEsp->codProd)
+        {
+            strcpy(nombreExp,iEsp->nombreProd);
+            return 1; //Cuando encuentra el nombre retorna 1
+        }
+        iEsp++;
+    }
+    return TODO_OK; //Si no llega a encontrar el nombre devuelve 0
 }

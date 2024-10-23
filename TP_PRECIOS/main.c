@@ -26,9 +26,11 @@ int main(int argc,char* argv[])
     //calcularPromedio(&vecDatos,&vecEsp, punto5);
     //mostrarPunto5();
 
-    crearArchSinPrecio(&vecDatos,&vecEsp);
-    printf("\nARCHIVO SIN PRECIOS\n\n");
-    mostrarArchEsp("sinprecios.dat");
+    calcularMedidaGeometrica(&vecDatos,&vecEsp);
+
+    //crearArchSinPrecio(&vecDatos,&vecEsp);
+    //printf("\nARCHIVO SIN PRECIOS\n\n");
+    //mostrarArchEsp("sinprecios.dat");
     //MostrarArchDatos("Datos.dat");
     //mostrarArchEsp("especificaciones.dat");
     return 0;

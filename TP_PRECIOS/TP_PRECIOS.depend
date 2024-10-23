@@ -124,3 +124,18 @@
 	<stdlib.h>
 	"Funciones.h"
 
+1729714450 source:f:\documetos\unlam\segundo\topicos\recursante\preciostp\tp_precios\main.c
+	<stdio.h>
+	<stdlib.h>
+	"Funciones.h"
+
+1729714535 f:\documetos\unlam\segundo\topicos\recursante\preciostp\tp_precios\funciones.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<stdbool.h>
+	<math.h>
+
+1729715919 source:f:\documetos\unlam\segundo\topicos\recursante\preciostp\tp_precios\funciones.c
+	"Funciones.h"
+

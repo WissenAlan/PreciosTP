@@ -15,7 +15,7 @@
 #define CAP_INI 100
 #define FACTOR_INCR 50
 #define SIN_MEM 6
-#define TODO_OK 0
+#include <math.h>
 
 typedef int (*Cmp) (const void*e1, const void*e2);
 
@@ -64,6 +64,7 @@ void intercambiar(void* ant, void* sig, size_t );
 void vectorMostrarEsp(const Vector*);
 void vectorMostrarDatos(const Vector*);
 void vectorOrdenarInsercion(Vector *vec,Cmp);
-
+int buscarNombre(const Vector* vec,const int codBuscar, char* nombreExp);
+void calcularMedidaGeometrica(const Vector* vecDatos,const Vector* vecEsp);
 
 #endif // FUNCIONES_H_INCLUDED
