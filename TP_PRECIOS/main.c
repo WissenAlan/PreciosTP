@@ -20,7 +20,7 @@ int main(int argc,char* argv[])
     vectorOrdenarInsercion(&vecEsp,cmpEsp);
     ///////////////////////////////////////////
     //////////////////////////////////////////////
-    vectorMostrarDatos(&vecDatos);
+    //vectorMostrarDatos(&vecDatos);
     //vectorMostrarEsp(&vecEsp);
 
     //calcularPromedio(&vecDatos,&vecEsp, punto5);
@@ -48,6 +48,5 @@ int cmpEsp(const void*e1, const void*e2)
 {
     Especificaciones* dato1 = (Especificaciones*)e1;
     Especificaciones* dato2 = (Especificaciones*)e2;
-    int res=(dato1->codProd) - (dato2->codProd);
-    return(res);
+    return(dato1->codProd) - (dato2->codProd);
 }
