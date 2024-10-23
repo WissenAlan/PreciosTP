@@ -179,36 +179,6 @@ void mostrarArchEsp(const char* nombreArch)
     fclose(pf);
 }
 
-void normalizarCadena(char* cad)
-{
-    int flag = 0;
-    while(*cad)
-    {
-        if(flag == 0)
-        {
-            flag = 1;
-            if(ES_MINUS(*cad))
-                *cad -= ('a' - 'A');
-            cad++;
-        }
-
-        else if(ES_MAYUS(*cad))
-        {
-            *cad += ('a' - 'A');
-            cad++;
-        }
-
-
-        else if(*cad == '.' && *(cad + 1) == ' ')
-        {
-            flag = 0;
-            cad += 2;
-        }
-        else
-            cad++;
-    }
-}
-
 bool vectorCrear(Vector *vec, size_t tamanioElemento)
 {
     vec->vec = malloc(CAP_INI * tamanioElemento);
@@ -264,7 +234,7 @@ void vectorMostrarEsp(const Vector* vector)
     for(Especificaciones *i = vector->vec; i < ult ;i++)
         printf("%d\t%s\t%s\n",i->codProd,i->nombreProd,i->especifProd);
 }
-
+//PUNTO 1
 void vectorOrdenarSeleccion(Vector* vector, Cmp cmp)
 {
     void* ult = vector->vec + (vector->ce * vector->tamElem) - vector->tamElem;
@@ -275,7 +245,6 @@ void vectorOrdenarSeleccion(Vector* vector, Cmp cmp)
 
     free(m);
 }
-
 void* _buscarMenor(void*ini, void*fin, Cmp cmp,size_t size)
 {
     void* men = ini;
@@ -285,7 +254,6 @@ void* _buscarMenor(void*ini, void*fin, Cmp cmp,size_t size)
 
     return men;
 }
-
 void intercambiar(void* ant, void* sig, size_t size)
 {
     void* aTemp = malloc(size);
@@ -294,7 +262,7 @@ void intercambiar(void* ant, void* sig, size_t size)
     memcpy(sig, aTemp, size);
     free(aTemp);
 }
-
+//PUNTO 2
 void vectorOrdenarInsercion(Vector *vector,Cmp cmpEsp)
 {
     void *ult = vector->vec + (vector->ce - 1) * vector->tamElem;
@@ -315,7 +283,72 @@ void vectorOrdenarInsercion(Vector *vector,Cmp cmpEsp)
     }
     free(elemAIns);
 }
+//PUNTO 3
+void normalizarCadena(char* cad)
+{
+    int flag = 0;
+    while(*cad)
+    {
+        if(flag == 0)
+        {
+            flag = 1;
+            if(ES_MINUS(*cad))
+                *cad -= ('a' - 'A');
+            cad++;
+        }
 
+        else if(ES_MAYUS(*cad))
+        {
+            *cad += ('a' - 'A');
+            cad++;
+        }
+
+
+        else if(*cad == '.' && *(cad + 1) == ' ')
+        {
+            flag = 0;
+            cad += 2;
+        }
+        else
+            cad++;
+    }
+}
+//PUNTO 4
+int crearArchSinPrecio(Vector *vecDatos ,Vector * vecEsp)
+{
+    FILE* pfsinprecio = fopen("sinprecios.dat","wb");
+    if(!pfsinprecio)
+        return ERROR_ARCH;
+
+    Especificaciones *esp,*ultEsp;
+    esp = vecEsp->vec;
+    ultEsp = esp + vecEsp->ce;
+
+    while(esp < ultEsp)
+    {
+        if(buscarSinPrecio(esp,vecDatos) == 0) ////BUSCA SI EL PRODUCTO DE LA LINEA QUE SE LEE TIENE EL PRECIO EN EL ARCHIVO DE DATOS
+            fwrite(esp,sizeof(Especificaciones),1,pfsinprecio); ////ESCRIBE EN EL ARCHIVO DE SIN PRECIO LAS ESPECIFICACIONES DEL PRODUCTO
+        esp++;
+    }
+    fclose(pfsinprecio);
+    return TODO_OK;
+}
+int buscarSinPrecio(void* i, Vector *vector)
+{
+    Datos *vecD = (Datos*)vector->vec;
+    Datos *ultDat = vecD + (vector->ce);
+    Especificaciones *esp = i;
+
+    while(vecD < ultDat)
+    {
+        if(esp->codProd == vecD->codProd)
+            return 1; ////EL PRODUCTO TIENE PRECIO
+        else
+            vecD++;
+    }
+    return TODO_OK; ////NO ENCONTRÓ EL PRODUCTO, NO TIENE PRECIO
+}
+//PUNTO 5
 int calcularPromedio(const Vector* vecDatos,const Vector* vecEsp, const int vecPunto5[])
 {
     FILE* pf = fopen("Punto5.txt","wt");
@@ -376,7 +409,6 @@ int calcularPromedio(const Vector* vecDatos,const Vector* vecEsp, const int vecP
     fclose(pf);
     return TODO_OK;
 }
-
 int mostrarPunto5()
 {
     FILE* pf = fopen("Punto5.txt","rt");
@@ -392,41 +424,4 @@ int mostrarPunto5()
     }
     fclose(pf);
     return TODO_OK;
-}
-
-
-int crearArchSinPrecio(Vector *vecDatos ,Vector * vecEsp)
-{
-    FILE* pfsinprecio = fopen("sinprecios.dat","wb");
-    if(!pfsinprecio)
-        return ERROR_ARCH;
-
-    Especificaciones *esp,*ultEsp;
-    esp = vecEsp->vec;
-    ultEsp = esp + vecEsp->ce;
-
-    while(esp < ultEsp)
-    {
-        if(buscarSinPrecio(esp,vecDatos) == 0) ////BUSCA SI EL PRODUCTO DE LA LINEA QUE SE LEE TIENE EL PRECIO EN EL ARCHIVO DE DATOS
-            fwrite(esp,sizeof(Especificaciones),1,pfsinprecio); ////ESCRIBE EN EL ARCHIVO DE SIN PRECIO LAS ESPECIFICACIONES DEL PRODUCTO
-        esp++;
-    }
-    fclose(pfsinprecio);
-    return TODO_OK;
-}
-
-int buscarSinPrecio(void* i, Vector *vector)
-{
-    Datos *vecD = (Datos*)vector->vec;
-    Datos *ultDat = vecD + (vector->ce);
-    Especificaciones *esp = i;
-
-    while(vecD < ultDat)
-    {
-        if(esp->codProd == vecD->codProd)
-            return 1; ////EL PRODUCTO TIENE PRECIO
-        else
-            vecD++;
-    }
-    return TODO_OK; ////NO ENCONTRÓ EL PRODUCTO, NO TIENE PRECIO
 }
