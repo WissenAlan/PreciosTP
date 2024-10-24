@@ -148,6 +148,7 @@ void leerLineaEsp(Especificaciones *esp,char* linea)
     *act = '\0';
     act = strrchr(linea,'|');
     strncpy(esp->especifProd,act+2,TAM_ESP);
+    esp->especifProd[TAM_ESP] = '\0';
     *act = '\0';
 
     normalizarCadena(esp->especifProd);
@@ -156,6 +157,7 @@ void leerLineaEsp(Especificaciones *esp,char* linea)
     *act = '\0';
     act = strrchr(linea,'|');
     strncpy(esp->nombreProd,act + 2,TAM_NOM);
+    esp->nombreProd[TAM_NOM] = '\0';
     *act = '\0';
 
     normalizarCadena(esp->nombreProd);
