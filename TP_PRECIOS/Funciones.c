@@ -414,50 +414,6 @@ int mostrarPunto5()
     return TODO_OK;
 }
 //PUNTO 6
-
-//PUNTO 7
-void calcularMedidaGeometrica(const Vector* vecDatos,const Vector* vecEsp)
-{
-    Datos *ult = vecDatos->vec + vecDatos->ce;
-    char nombreProd[TAM_NOM];
-    float acum = 0;
-    int codAux = 0,cont = 0;
-    for(Datos *i = vecDatos->vec; i <= ult; i++)
-    {
-        if(cont == 0 || codAux == i->codProd)
-        {
-            acum += log(i->precio);
-            cont++;
-            codAux = i->codProd;
-        }
-        else
-        {
-            buscarNombre(vecEsp,codAux,nombreProd);
-            printf("%d\t%s\t%g\n",codAux,nombreProd,acum);
-            acum = 0;
-            cont = 0;
-            codAux = i->codProd;
-            i--;
-        }
-    }
-}
-
-int buscarNombre(const Vector* vec,const int codBuscar, char* nombreExp)
-{
-    Especificaciones* iEsp = vec->vec;
-    Especificaciones* ultEsp = vec->vec + vec->ce*vec->tamElem;
-    while(iEsp <= ultEsp)
-    {
-        if(codBuscar == iEsp->codProd)
-        {
-            strcpy(nombreExp,iEsp->nombreProd);
-            return 1; //Cuando encuentra el nombre retorna 1
-        }
-        iEsp++;
-    }
-    return TODO_OK; //Si no llega a encontrar el nombre devuelve 0
-}
-
 int CalcularVarianzayDesvio(Vector* vec)
 {
     Datos *ini,*u;
@@ -493,5 +449,48 @@ int CalcularVarianzayDesvio(Vector* vec)
     }
     return TODO_OK;
 }
+//PUNTO 7
+void calcularMedidaGeometrica(const Vector* vecDatos,const Vector* vecEsp)
+{
+    Datos *ult = ((Datos*)vecDatos->vec) + vecDatos->ce;
+    char nombreProd[TAM_NOM];
+    float acum = 0;
+    int codAux = 0,cont = 0;
+    for(Datos *i = ((Datos*)vecDatos->vec); i <= ult; i++)
+    {
+        if(cont == 0 || codAux == i->codProd)
+        {
+            acum += log(i->precio);
+            cont++;
+            codAux = i->codProd;
+        }
+        else
+        {
+            buscarNombre(vecEsp,codAux,nombreProd);
+            printf("%-10d\t%-90s\t%-10g\n",codAux,nombreProd,acum/cont);
+            acum = 0;
+            cont = 0;
+            codAux = i->codProd;
+            i--;
+        }
+    }
+}
+
+int buscarNombre(const Vector* vec,const int codBuscar, char* nombreExp)
+{
+    Especificaciones* iEsp = vec->vec;
+    Especificaciones* ultEsp = vec->vec + vec->ce*vec->tamElem;
+    while(iEsp <= ultEsp)
+    {
+        if(codBuscar == iEsp->codProd)
+        {
+            strcpy(nombreExp,iEsp->nombreProd);
+            return 1; //Cuando encuentra el nombre retorna 1
+        }
+        iEsp++;
+    }
+    return TODO_OK; //Si no llega a encontrar el nombre devuelve 0
+}
+
 
 

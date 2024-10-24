@@ -29,7 +29,8 @@ int main(int argc,char* argv[])
     CalcularVarianzayDesvio(&vecDatos);
     //calcularPromedio(&vecDatos,&vecEsp, punto5);
     //mostrarPunto5();
-
+    //vectorOrdenarSeleccion(&vecDatos, cmpDatos);
+    calcularMedidaGeometrica(&vecDatos,&vecEsp);
    // crearArchSinPrecio(&vecDatos,&vecEsp);
     //printf("\nARCHIVO SIN PRECIOS\n\n");
    // mostrarArchEsp("sinprecios.dat");
@@ -51,10 +52,7 @@ int cmpDatos(const void* e1, const void* e2){
 int cmpDatosP6(const void* e1, const void* e2){
     Datos* dato1 = (Datos*)e1;
     Datos* dato2 = (Datos*)e2;
-
-    if(dato1->mes == dato2->mes)
-        return dato1->mes-dato2->mes;
-
+    return dato1->mes-dato2->mes;
 }
 
 int cmpEsp(const void*e1, const void*e2)
