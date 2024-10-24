@@ -1,4 +1,4 @@
-#include <stdio.h>
+e#include <stdio.h>
 #include <stdlib.h>
 #include "Funciones.h"
 
@@ -56,4 +56,14 @@ int cmpEsp(const void*e1, const void*e2)
     Especificaciones* dato1 = (Especificaciones*)e1;
     Especificaciones* dato2 = (Especificaciones*)e2;
     return(dato1->codProd) - (dato2->codProd);
+}
+
+int cmpDatosP6(const void* e1, const void* e2){
+    Datos* dato1 = (Datos*)e1;
+    Datos* dato2 = (Datos*)e2;
+
+    if(dato1->mes == dato2->mes)
+        return dato1->mes-dato2->mes;
+    //else
+       // return dato1->numForm - dato2->numForm;
 }
