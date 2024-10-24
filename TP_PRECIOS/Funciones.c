@@ -4,6 +4,7 @@ void* _buscarMenor(void*ini, void*fin, Cmp cmp, size_t size);
 
 int pasarDatosTxtABin(const char* nombreArch, Vector* vec)
 {
+    int ret;
     char linea[TAM_LINEA];
 
     FILE* pf2 = fopen("Datos.dat","wb");
@@ -14,14 +15,15 @@ int pasarDatosTxtABin(const char* nombreArch, Vector* vec)
     Datos datos;
     if(!pf)
         return ERROR_ARCH;
-
-    fgets(linea,TAM_LINEA,pf);
-    while(!feof(pf))
+    
+    while(fgets(linea,TAM_LINEA,pf))
     {
-        leerLinea(&datos,linea); ////Me carga y separa la linea///
-        vectorInsertar(vec,&datos);////Inserto en el vector////
-        fwrite(&datos,sizeof(Datos),1,pf2);
-        fgets(linea,TAM_LINEA,pf);
+        ret=leerLinea(&datos,linea); ////Me carga y separa la linea///
+        if(ret==TODO_OK)
+        {
+            vectorInsertar(vec,&datos);////Inserto en el vector////
+            fwrite(&datos,sizeof(Datos),1,pf2);
+        }        
     }
 
     fclose(pf);
@@ -113,15 +115,18 @@ int pasarEspecificacionesTxtABin(const char* nombreArch, Vector* vec)
 
     char linea[TAM_LINEA];
     Especificaciones esp;
-
+    int ret;
     fgets(linea,TAM_LINEA,pf);
     while(!feof(pf))
     {
         ////Me carga y separa la linea///
-        leerLineaEsp(&esp, linea);
-        /////Escribo en el archivo bin/////
-        fwrite(&esp,sizeof(Especificaciones),1,pf2);
-        vectorInsertar(vec,&esp);
+        ret = leerLineaEsp(&esp, linea);
+        if(ret == TODO_OK)
+        {
+            /////Escribo en el archivo bin/////
+            fwrite(&esp,sizeof(Especificaciones),1,pf2);
+            vectorInsertar(vec,&esp);
+        }
         fgets(linea,TAM_LINEA,pf);
     }
     ////Archivos ya pasados a bin y vector cargado/////
