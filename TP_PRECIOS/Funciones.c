@@ -460,9 +460,8 @@ int buscarNombre(const Vector* vec,const int codBuscar, char* nombreExp)
 
 int CalcularVarianzayDesvio(Vector* vec)
 {
-    (Datos*)vec->vec;
     Datos *ini,*u;
-    ini = vec->vec;
+    ini = (Datos*)vec->vec;
     u = ini + vec->ce;
     float sumaprecios=0,sumacuadr=0,promedioMes=0,varianzaMes=0,desv;
      int  mesact=ini->mes,cont=0;
