@@ -5,7 +5,7 @@
 #define TAM_LINEA 200
 #define TAM_COD 7
 #define TAM_ESP 251
-#define TAM_NOM 51
+#define TAM_NOM 53
 #define ES_MINUS(X) ((X) >= 'a' && (X) <= 'z') ? true : false
 #define ES_MAYUS(X) ((X) >= 'A' && (X) <= 'Z') ? true : false
 #include <stdio.h>
@@ -54,7 +54,7 @@ int buscarSinPrecio(void*,Vector*);
 
 void normalizarCadena(char* cad);
 int calcularPromedio(const Vector*,const Vector*,const int[]);
-int CalcularVarianzayDesvio(Vector*);
+int calcularVarianzayDesvio(Vector*);
 int mostrarPunto5();
 
 int vectorInsertar(Vector* Vec, void* elem);
@@ -65,7 +65,7 @@ void intercambiar(void* ant, void* sig, size_t );
 void vectorMostrarEsp(const Vector*);
 void vectorMostrarDatos(const Vector*);
 void vectorOrdenarInsercion(Vector *vec,Cmp);
-int buscarNombre(const Vector* vec,const int codBuscar, char* nombreExp);
+void buscarNombre(const Vector* vec,const int codBuscar, char* nombreExp);
 void calcularMedidaGeometrica(const Vector* vecDatos,const Vector* vecEsp);
 
 #endif // FUNCIONES_H_INCLUDED

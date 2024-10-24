@@ -414,37 +414,32 @@ int mostrarPunto5()
     return TODO_OK;
 }
 //PUNTO 6
-int CalcularVarianzayDesvio(Vector* vec)
+int calcularVarianzayDesvio(Vector* vec)
 {
     Datos *ini,*u;
     ini = (Datos*)vec->vec;
     u = ini + vec->ce;
-    float sumaprecios=0,sumacuadr=0,promedioMes=0,varianzaMes=0,desv;
-     int  mesact=ini->mes,cont=0;
-     int numFormActual = ini->numForm;
+    float sumaprecios = 0,sumacuadr = 0,promedioMes = 0,varianzaMes = 0,desv;
+    int  mesact = ini->mes,cont = 0;
+    int numFormActual = ini->numForm;
 
-
-    while(ini<u)
+    while(ini < u)
     {
-
-        while(mesact==ini->mes && numFormActual == ini->numForm)
+        while(mesact == ini->mes && numFormActual == ini->numForm)
         {
-            sumaprecios+= ini->precio;
-            sumacuadr+= ini->precio * ini->precio;
+            sumaprecios += ini->precio;
+            sumacuadr += ini->precio * ini->precio;
             cont++;
             ini++;
         }
-
-        if(cont>0)
+        if(cont > 0)
         {
-            promedioMes=sumaprecios/cont;
-            varianzaMes=(sumacuadr/cont)-(promedioMes*promedioMes);
-            desv= sqrt(varianzaMes);
-
+            promedioMes = sumaprecios / cont;
+            varianzaMes = (sumacuadr / cont) - (promedioMes * promedioMes);
+            desv = sqrt(varianzaMes);
             printf("Mes: %d\tNumForm:%d\tVarianza: %.2f\tDesvio estandar: %.2f\n", mesact,numFormActual,varianzaMes, desv);
         }
-
-         mesact=ini->mes;
+         mesact = ini->mes;
          numFormActual = ini->numForm;
     }
     return TODO_OK;
@@ -452,31 +447,33 @@ int CalcularVarianzayDesvio(Vector* vec)
 //PUNTO 7
 void calcularMedidaGeometrica(const Vector* vecDatos,const Vector* vecEsp)
 {
-    Datos *ult = ((Datos*)vecDatos->vec) + vecDatos->ce;
-    char nombreProd[TAM_NOM];
+    Datos *ult = vecDatos->vec + vecDatos->ce*vecDatos->tamElem;
+    char nombre[TAM_NOM];
     float acum = 0;
     int codAux = 0,cont = 0;
-    for(Datos *i = ((Datos*)vecDatos->vec); i <= ult; i++)
+    for(Datos *i = vecDatos->vec; i < ult; i++)
     {
-        if(cont == 0 || codAux == i->codProd)
+        if(codAux == 0 || codAux == i->codProd)
         {
+            if(codAux == 0)
+                codAux = i->codProd;
             acum += log(i->precio);
             cont++;
-            codAux = i->codProd;
         }
         else
         {
-            buscarNombre(vecEsp,codAux,nombreProd);
-            printf("%-10d\t%-90s\t%-10g\n",codAux,nombreProd,acum/cont);
+            buscarNombre(vecEsp,codAux,nombre);
+            printf("%-10d\t%-50s\t%g\n",codAux,nombre,acum/cont);
             acum = 0;
             cont = 0;
-            codAux = i->codProd;
+            codAux = 0;
             i--;
         }
+
     }
 }
 
-int buscarNombre(const Vector* vec,const int codBuscar, char* nombreExp)
+void buscarNombre(const Vector* vec,const int codBuscar, char* nombreExp)
 {
     Especificaciones* iEsp = vec->vec;
     Especificaciones* ultEsp = vec->vec + vec->ce*vec->tamElem;
@@ -485,11 +482,10 @@ int buscarNombre(const Vector* vec,const int codBuscar, char* nombreExp)
         if(codBuscar == iEsp->codProd)
         {
             strcpy(nombreExp,iEsp->nombreProd);
-            return 1; //Cuando encuentra el nombre retorna 1
+            return; //Cuando encuentra el nombre retorna 1
         }
         iEsp++;
     }
-    return TODO_OK; //Si no llega a encontrar el nombre devuelve 0
 }
 
 
