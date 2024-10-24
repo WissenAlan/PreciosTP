@@ -22,6 +22,11 @@ int main(int argc,char* argv[])
     //////////////////////////////////////////////
     //vectorMostrarDatos(&vecDatos);
     //vectorMostrarEsp(&vecEsp);
+    /////Ordenado por mes y nro de formulario/////
+    //////////////PUNTO 6//////////////////////////
+    vectorOrdenarSeleccion(&vecDatos, cmpDatosP6);
+    vectorMostrarDatos(&vecDatos);
+    CalcularVarianzayDesvio(&vecDatos);
 
     //calcularPromedio(&vecDatos,&vecEsp, punto5);
     //mostrarPunto5();
