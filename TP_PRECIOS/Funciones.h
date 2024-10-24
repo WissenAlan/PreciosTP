@@ -54,6 +54,7 @@ int buscarSinPrecio(void*,Vector*);
 
 void normalizarCadena(char* cad);
 int calcularPromedio(const Vector*,const Vector*,const int[]);
+int CalcularVarianzayDesvio(Vector*);
 int mostrarPunto5();
 
 int vectorInsertar(Vector* Vec, void* elem);
