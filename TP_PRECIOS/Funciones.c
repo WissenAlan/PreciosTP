@@ -346,7 +346,7 @@ int buscarSinPrecio(void* i, Vector *vector)
         else
             vecD++;
     }
-    return TODO_OK; ////NO ENCONTRÓ EL PRODUCTO, NO TIENE PRECIO
+    return TODO_OK; ////NO ENCONTRÃ“ EL PRODUCTO, NO TIENE PRECIO
 }
 //PUNTO 5
 int calcularPromedio(const Vector* vecDatos,const Vector* vecEsp, const int vecPunto5[])
@@ -380,7 +380,7 @@ int calcularPromedio(const Vector* vecDatos,const Vector* vecEsp, const int vecP
                 indice++;//Aumenta el indice para la proxima vuelta
                 i--;//Vuelve uno atras para hacer la impresion por pantalla
             }
-            for(int j = 0;j < 12;j++)//Hasta que j sea menor a 12 por los 12 meses del año
+            for(int j = 0;j < 12;j++)//Hasta que j sea menor a 12 por los 12 meses del aÃ±o
             {
                 if(matriz[j][1] > 0)//Imprime solo si hay algo en la matriz
                 {
@@ -441,6 +441,7 @@ void calcularMedidaGeometrica(const Vector* vecDatos,const Vector* vecEsp)
         }
     }
 }
+
 int buscarNombre(const Vector* vec,const int codBuscar, char* nombreExp)
 {
     Especificaciones* iEsp = vec->vec;
@@ -456,3 +457,42 @@ int buscarNombre(const Vector* vec,const int codBuscar, char* nombreExp)
     }
     return TODO_OK; //Si no llega a encontrar el nombre devuelve 0
 }
+
+int CalcularVarianzayDesvio(Vector* vec)
+{
+    (Datos*)vec->vec;
+    Datos *ini,*u;
+    ini = vec->vec;
+    u = ini + vec->ce;
+    float sumaprecios=0,sumacuadr=0,promedioMes=0,varianzaMes=0,desv;
+     int  mesact=ini->mes,cont=0;
+     int numFormActual = ini->numForm;
+
+
+    while(ini<u)
+    {
+
+        while(mesact==ini->mes && numFormActual == ini->numForm)
+        {
+            sumaprecios+= ini->precio;
+            sumacuadr+= ini->precio * ini->precio;
+            cont++;
+            ini++;
+        }
+
+        if(cont>0)
+        {
+            promedioMes=sumaprecios/cont;
+            varianzaMes=(sumacuadr/cont)-(promedioMes*promedioMes);
+            desv= sqrt(varianzaMes);
+
+            printf("Mes: %d\tNumForm:%d\tVarianza: %.2f\tDesvio estandar: %.2f\n", mesact,numFormActual,varianzaMes, desv);
+        }
+
+         mesact=ini->mes;
+         numFormActual = ini->numForm;
+    }
+    return TODO_OK;
+}
+
+
