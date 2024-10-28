@@ -18,20 +18,20 @@ int main(int argc,char* argv[])
     pasarEspecificacionesTxtABin(argv[2],&vecEsp);
     /////////ORDENAMIENTOS/////////////////////
     vectorOrdenarSeleccion(&vecDatos, cmpDatos);
-    vectorOrdenarInsercion(&vecEsp,cmpEsp);
+    //vectorOrdenarInsercion(&vecEsp,cmpEsp);
     ///////////////////////////////////////////
     //////////////////////////////////////////////
-    // vectorMostrarDatos(&vecDatos);
+    vectorMostrarDatos(&vecDatos);
     //vectorMostrarEsp(&vecEsp);
-    crearArchSinPrecio(&vecDatos,&vecEsp);
-    printf("\nARCHIVO SIN PRECIOS\n\n");
-    mostrarArchEsp("sinprecios.dat");
-    calcularPromedio(&vecDatos,&vecEsp, punto5);
-    mostrarPunto5();
+    //crearArchSinPrecio(&vecDatos,&vecEsp);
+    //printf("\nARCHIVO SIN PRECIOS\n\n");
+    //mostrarArchEsp("sinprecios.dat");
+    //calcularPromedio(&vecDatos,&vecEsp, punto5);
+    //mostrarPunto5();
     calcularMedidaGeometrica(&vecDatos,&vecEsp);
     /////Ordenado por mes y nro de formulario/////
-    vectorOrdenarSeleccion(&vecDatos, cmpDatosP6);
-    calcularVarianzayDesvio(&vecDatos);
+    //vectorOrdenarSeleccion(&vecDatos, cmpDatosP6);
+    //calcularVarianzayDesvio(&vecDatos);
     //MostrarArchDatos("Datos.dat");
     //mostrarArchEsp("especificaciones.dat");
     return 0;

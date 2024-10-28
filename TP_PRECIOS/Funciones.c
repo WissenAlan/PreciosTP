@@ -15,15 +15,15 @@ int pasarDatosTxtABin(const char* nombreArch, Vector* vec)
     Datos datos;
     if(!pf)
         return ERROR_ARCH;
-    
+
     while(fgets(linea,TAM_LINEA,pf))
     {
-        ret=leerLinea(&datos,linea); ////Me carga y separa la linea///
-        if(ret==TODO_OK)
+        ret = leerLinea(&datos,linea); ////Me carga y separa la linea///
+        if(ret == TODO_OK)
         {
             vectorInsertar(vec,&datos);////Inserto en el vector////
             fwrite(&datos,sizeof(Datos),1,pf2);
-        }        
+        }
     }
 
     fclose(pf);
@@ -31,7 +31,7 @@ int pasarDatosTxtABin(const char* nombreArch, Vector* vec)
     return TODO_OK;
 }
 
-void leerLinea(Datos *datos,char* linea)
+int leerLinea(Datos *datos,char* linea)
 {
     char codAux[TAM_COD];
 
@@ -78,6 +78,8 @@ void leerLinea(Datos *datos,char* linea)
     *act = '\0';
 
     sscanf(linea,"%d",&datos->anio);
+
+    return TODO_OK;
 }
 
 int mostrarArchDatos(const char* nombreArchBin)
@@ -136,7 +138,7 @@ int pasarEspecificacionesTxtABin(const char* nombreArch, Vector* vec)
     return TODO_OK;
 }
 
-void leerLineaEsp(Especificaciones *esp,char* linea)
+int leerLineaEsp(Especificaciones *esp,char* linea)
 {
     char codAux[TAM_COD];
     char *act;
@@ -167,6 +169,8 @@ void leerLineaEsp(Especificaciones *esp,char* linea)
     act = strrchr(linea,'"');
     strncpy(codAux,act + 1,TAM_COD);
     esp->codProd = atoi(codAux);
+
+    return TODO_OK;
 }
 
 void mostrarArchEsp(const char* nombreArch)
@@ -454,7 +458,7 @@ int calcularVarianzayDesvio(Vector* vec)
 //PUNTO 7
 void calcularMedidaGeometrica(const Vector* vecDatos,const Vector* vecEsp)
 {
-    Datos *ult = vecDatos->vec + vecDatos->ce*vecDatos->tamElem;
+    const Datos *ult = vecDatos->vec + vecDatos->ce*vecDatos->tamElem;
     char nombre[TAM_NOM];
     float acum = 0;
     int codAux = 0,cont = 0;
@@ -470,7 +474,7 @@ void calcularMedidaGeometrica(const Vector* vecDatos,const Vector* vecEsp)
         else
         {
             buscarNombre(vecEsp,codAux,nombre);
-            printf("%-10d\t%-50s\t%g\n",codAux,nombre,acum/cont);
+            printf("%-10d\t%-50s\t%g\n",codAux,nombre,exp(acum/cont));
             acum = 0;
             cont = 0;
             codAux = 0;

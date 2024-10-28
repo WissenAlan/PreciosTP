@@ -44,8 +44,8 @@ typedef struct
 
 int pasarDatosTxtABin(const char* NombreArch, Vector*); //Tambien carga el vector de datos
 int pasarEspecificacionesTxtABin(const char* NombreArch, Vector*);
-void leerLinea(Datos *datos,char* Linea);
-void leerLineaEsp(Especificaciones *esp,char* Linea);
+int leerLinea(Datos *datos,char* Linea);
+int leerLineaEsp(Especificaciones *esp,char* Linea);
 int mostrarArchDatos(const char* NombreArchBin);
 void mostrarArchEsp(const char* NombreArch);
 
