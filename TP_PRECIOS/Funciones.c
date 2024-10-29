@@ -1,10 +1,10 @@
 #include "Funciones.h"
 
-void* _buscarMenor(void*ini, void*fin, Cmp cmp, size_t size);
+void* _buscarMenor(void*ini, const void*fin, const Cmp cmp,const size_t size);
 
-int pasarDatosTxtABin(const char* nombreArch, Vector* vec)
+int pasarDatosTxtABin(const char* nombreArch, Vector* vec, ErrorFatal errorFatal)
 {
-    int ret;
+    int ret = TODO_OK;
     char linea[TAM_LINEA];
 
     FILE* pf2 = fopen("Datos.dat","wb");
@@ -13,10 +13,11 @@ int pasarDatosTxtABin(const char* nombreArch, Vector* vec)
 
     FILE* pf = fopen(nombreArch,"rt");
     Datos datos;
+
     if(!pf)
         return ERROR_ARCH;
 
-    while(fgets(linea,TAM_LINEA,pf))
+    while(fgets(linea,TAM_LINEA,pf) && !errorFatal(ret))
     {
         ret = leerLinea(&datos,linea); ////Me carga y separa la linea///
         if(ret == TODO_OK)
@@ -36,6 +37,10 @@ int leerLinea(Datos *datos,char* linea)
     char codAux[TAM_COD];
 
     char *act = strchr(linea,'\n');
+
+    if(!act)
+        return ERR_LINEA_LARGA;
+
     *act = '\0';
     act = strrchr(linea,'|');
     sscanf(act + 1,"%d",&datos->numForm);
@@ -53,6 +58,7 @@ int leerLinea(Datos *datos,char* linea)
         }
         i++;
     }
+
     if(flag == 0)
         datos->precio = atoi(codAux);
     *act = '\0';
@@ -101,7 +107,7 @@ int mostrarArchDatos(const char* nombreArchBin)
     return TODO_OK;
 }
 
-int pasarEspecificacionesTxtABin(const char* nombreArch, Vector* vec)
+int pasarEspecificacionesTxtABin(const char* nombreArch, Vector* vec,ErrorFatal errorFatal)
 {
     FILE* pf2 = fopen("especificaciones.dat","wb");
     if(!pf2)
@@ -117,9 +123,9 @@ int pasarEspecificacionesTxtABin(const char* nombreArch, Vector* vec)
 
     char linea[TAM_LINEA];
     Especificaciones esp;
-    int ret;
-    fgets(linea,TAM_LINEA,pf);
-    while(!feof(pf))
+    int ret = TODO_OK;
+
+    while(fgets(linea,TAM_LINEA,pf) && !errorFatal(ret))
     {
         ////Me carga y separa la linea///
         ret = leerLineaEsp(&esp, linea);
@@ -129,7 +135,6 @@ int pasarEspecificacionesTxtABin(const char* nombreArch, Vector* vec)
             fwrite(&esp,sizeof(Especificaciones),1,pf2);
             vectorInsertar(vec,&esp);
         }
-        fgets(linea,TAM_LINEA,pf);
     }
     ////Archivos ya pasados a bin y vector cargado/////
     fclose(pf);
@@ -144,6 +149,8 @@ int leerLineaEsp(Especificaciones *esp,char* linea)
     char *act;
 
     act = strchr(linea,'\n');
+    if(!act)
+        return ERR_LINEA_LARGA;
     *act = '\0';
 
     act = strrchr(linea,'"');
@@ -211,6 +218,7 @@ int vectorInsertar(Vector* vec,void* elem)
 {
     if(vec->ce == vec->cap)
     {
+
         size_t nCap = vec->cap * FACTOR_INCR;
         void* nVec = realloc(vec->vec, nCap * vec->tamElem);
 
@@ -232,7 +240,7 @@ int vectorInsertar(Vector* vec,void* elem)
 
 void vectorMostrarDatos(const Vector* vector)
 {
-    Datos* ult = vector->vec + vector->ce - 1;
+    const Datos* ult = vector->vec + vector->ce * vector->tamElem;
     printf("Anio\tMes\tCodEmpresa\tCodProducto\tPrecio\tNumeroFormulario\n");
     for(Datos* i = vector->vec; i < ult; i++)
         printf("%d\t%d\t%-10d\t%-10d\t%-10g\t%-10d\n",i->anio,i->mes,i->codEmpresa,i->codProd,i->precio,i->numForm);
@@ -241,14 +249,14 @@ void vectorMostrarDatos(const Vector* vector)
 
 void vectorMostrarEsp(const Vector* vector)
 {
-    Especificaciones *ult= vector->vec + (vector->ce * vector->tamElem);
+    const Especificaciones *ult= vector->vec + (vector->ce * vector->tamElem);
     for(Especificaciones *i = vector->vec; i < ult ;i++)
         printf("%d\t%s\t%s\n",i->codProd,i->nombreProd,i->especifProd);
 }
 //PUNTO 1
-void vectorOrdenarSeleccion(Vector* vector, Cmp cmp)
+void vectorOrdenarSeleccion(const Vector* vector,const Cmp cmp)
 {
-    void* ult = vector->vec + (vector->ce * vector->tamElem) - vector->tamElem;
+    const void* ult = vector->vec + (vector->ce * vector->tamElem) - vector->tamElem;
     void* m = malloc(vector->tamElem);
 
     for(void* i = vector->vec; i < ult; i += vector->tamElem)
@@ -256,7 +264,7 @@ void vectorOrdenarSeleccion(Vector* vector, Cmp cmp)
 
     free(m);
 }
-void* _buscarMenor(void*ini, void*fin, Cmp cmp,size_t size)
+void* _buscarMenor(void*ini, const void*fin, const Cmp cmp,const size_t size)
 {
     void* men = ini;
     for(void* j = ini + size; j <= fin; j += size)
@@ -265,7 +273,7 @@ void* _buscarMenor(void*ini, void*fin, Cmp cmp,size_t size)
 
     return men;
 }
-void intercambiar(void* ant, void* sig, size_t size)
+void intercambiar(void* ant, void* sig, const size_t size)
 {
     void* aTemp = malloc(size);
     memcpy(aTemp, ant, size);
@@ -274,9 +282,9 @@ void intercambiar(void* ant, void* sig, size_t size)
     free(aTemp);
 }
 //PUNTO 2
-void vectorOrdenarInsercion(Vector *vector,Cmp cmpEsp)
+void vectorOrdenarInsercion(const Vector *vector,const Cmp cmpEsp)
 {
-    void *ult = vector->vec + (vector->ce - 1) * vector->tamElem;
+    const void *ult = vector->vec + (vector->ce - 1) * vector->tamElem;
     void *elemAIns = malloc(vector->tamElem);
     void *i,*j;
 
@@ -305,27 +313,21 @@ void normalizarCadena(char* cad)
             flag = 1;
             if(ES_MINUS(*cad))
                 *cad -= ('a' - 'A');
-            cad++;
         }
 
         else if(ES_MAYUS(*cad))
-        {
             *cad += ('a' - 'A');
-            cad++;
-        }
-
 
         else if(*cad == '.' && *(cad + 1) == ' ')
         {
             flag = 0;
-            cad += 2;
-        }
-        else
             cad++;
+        }
+        cad++;
     }
 }
 //PUNTO 4
-int crearArchSinPrecio(Vector *vecDatos ,Vector * vecEsp)
+int crearArchSinPrecio(const Vector *vecDatos,const Vector * vecEsp)
 {
     FILE* pfsinprecio = fopen("sinprecios.dat","wb");
     if(!pfsinprecio)
@@ -344,11 +346,11 @@ int crearArchSinPrecio(Vector *vecDatos ,Vector * vecEsp)
     fclose(pfsinprecio);
     return TODO_OK;
 }
-int buscarSinPrecio(void* i, Vector *vector)
+int buscarSinPrecio(const void* i,const Vector *vector)
 {
     Datos *vecD = (Datos*)vector->vec;
-    Datos *ultDat = vecD + (vector->ce);
-    Especificaciones *esp = i;
+    const Datos *ultDat = vecD + (vector->ce);
+    const Especificaciones *esp = i;
 
     while(vecD->codProd <= esp->codProd && vecD < ultDat) //Como vecD ya esta ordenado por codProd, si es mayor al buscado no deberia encontrarlo
     {
@@ -372,7 +374,7 @@ int calcularPromedio(const Vector* vecDatos,const Vector* vecEsp, const int vecP
     char nombreProd[TAM_NOM];
 
     Datos* i = vecDatos->vec;
-    Datos* ult = vecDatos->vec + vecDatos->ce*vecDatos->tamElem;
+    const Datos* ult = vecDatos->vec + vecDatos->ce*vecDatos->tamElem;
     while(i <= ult)
     {
         if(i->codProd == vecPunto5[indice])
@@ -425,7 +427,7 @@ int mostrarPunto5()
     return TODO_OK;
 }
 //PUNTO 6
-int calcularVarianzayDesvio(Vector* vec)
+int calcularVarianzayDesvio(const Vector* vec)
 {
     Datos *ini,*u;
     ini = (Datos*)vec->vec;
@@ -480,7 +482,6 @@ void calcularMedidaGeometrica(const Vector* vecDatos,const Vector* vecEsp)
             codAux = 0;
             i--;
         }
-
     }
 }
 
@@ -499,5 +500,12 @@ void buscarNombre(const Vector* vec,const int codBuscar, char* nombreExp)
     }
 }
 
-
+void vectorEliminar(Vector* vec)
+{
+    free(vec->vec);
+    vec->vec = NULL;
+    vec->ce = 0;
+    vec->cap = 0;
+    vec->tamElem = 0;
+}
 

@@ -2,6 +2,7 @@
 #define FUNCIONES_H_INCLUDED
 #define ERROR_ARCH 1
 #define TODO_OK 0
+#define ERR_LINEA_LARGA 3
 #define TAM_LINEA 200
 #define TAM_COD 7
 #define TAM_ESP 251
@@ -18,6 +19,7 @@
 #include <math.h>
 
 typedef int (*Cmp) (const void*e1, const void*e2);
+typedef bool (*ErrorFatal)(int cod);
 
 typedef struct{
     int anio;
@@ -42,29 +44,30 @@ typedef struct
     size_t tamElem;
 }Vector;
 
-int pasarDatosTxtABin(const char* NombreArch, Vector*); //Tambien carga el vector de datos
-int pasarEspecificacionesTxtABin(const char* NombreArch, Vector*);
+int pasarDatosTxtABin(const char* NombreArch, Vector*,ErrorFatal errorFatal); //Tambien carga el vector de datos
+int pasarEspecificacionesTxtABin(const char* NombreArch, Vector*,ErrorFatal errorFatal);
 int leerLinea(Datos *datos,char* Linea);
 int leerLineaEsp(Especificaciones *esp,char* Linea);
 int mostrarArchDatos(const char* NombreArchBin);
 void mostrarArchEsp(const char* NombreArch);
 
-int crearArchSinPrecio(Vector *, Vector *);
-int buscarSinPrecio(void*,Vector*);
+int crearArchSinPrecio(const Vector*, const Vector*);
+int buscarSinPrecio(const void*,const Vector*);
 
 void normalizarCadena(char* cad);
 int calcularPromedio(const Vector*,const Vector*,const int[]);
-int calcularVarianzayDesvio(Vector*);
+int calcularVarianzayDesvio(const Vector*);
 int mostrarPunto5();
 
 int vectorInsertar(Vector* Vec, void* elem);
 bool vectorCrear(Vector *vec, size_t tamanioElemento);
+void vectorEliminar(Vector* vec);
 void vectorMostrar(const Vector*);
-void vectorOrdenarSeleccion(Vector*, Cmp);
-void intercambiar(void* ant, void* sig, size_t );
+void vectorOrdenarSeleccion(const Vector*, const Cmp);
+void intercambiar(void* ant, void* sig, const size_t);
+void vectorOrdenarInsercion(const Vector *vec,const Cmp);
 void vectorMostrarEsp(const Vector*);
 void vectorMostrarDatos(const Vector*);
-void vectorOrdenarInsercion(Vector *vec,Cmp);
 void buscarNombre(const Vector* vec,const int codBuscar, char* nombreExp);
 void calcularMedidaGeometrica(const Vector* vecDatos,const Vector* vecEsp);
 

@@ -5,6 +5,7 @@
 int cmpDatosP6(const void* e1, const void* e2);
 int cmpDatos(const void* e1, const void* e2);
 int cmpEsp(const void *e1, const void *e2);
+bool errorFatal(int cod);
 const int punto5[] = {2141101, 2213103, 2223103 ,3211306, 3222105};
 
 int main(int argc,char* argv[])
@@ -14,26 +15,28 @@ int main(int argc,char* argv[])
     vectorCrear(&vecDatos,sizeof(Datos));
     vectorCrear(&vecEsp,sizeof(Especificaciones));
     ///////////////////////////////////////////////
-    pasarDatosTxtABin(argv[1],&vecDatos);
-    pasarEspecificacionesTxtABin(argv[2],&vecEsp);
+    pasarDatosTxtABin(argv[1],&vecDatos, errorFatal);
+    pasarEspecificacionesTxtABin(argv[2],&vecEsp, errorFatal);
     /////////ORDENAMIENTOS/////////////////////
+    //mostrarArchDatos("Datos.dat");
+    //mostrarArchEsp("especificaciones.dat");
     vectorOrdenarSeleccion(&vecDatos, cmpDatos);
-    //vectorOrdenarInsercion(&vecEsp,cmpEsp);
+    vectorOrdenarInsercion(&vecEsp,cmpEsp);
+    vectorMostrarEsp(&vecEsp);
     ///////////////////////////////////////////
     //////////////////////////////////////////////
     vectorMostrarDatos(&vecDatos);
-    //vectorMostrarEsp(&vecEsp);
-    //crearArchSinPrecio(&vecDatos,&vecEsp);
-    //printf("\nARCHIVO SIN PRECIOS\n\n");
-    //mostrarArchEsp("sinprecios.dat");
-    //calcularPromedio(&vecDatos,&vecEsp, punto5);
-    //mostrarPunto5();
+    crearArchSinPrecio(&vecDatos,&vecEsp);
+    printf("\nARCHIVO SIN PRECIOS\n\n");
+    mostrarArchEsp("sinprecios.dat");
+    calcularPromedio(&vecDatos,&vecEsp, punto5);
+    mostrarPunto5();
     calcularMedidaGeometrica(&vecDatos,&vecEsp);
     /////Ordenado por mes y nro de formulario/////
-    //vectorOrdenarSeleccion(&vecDatos, cmpDatosP6);
-    //calcularVarianzayDesvio(&vecDatos);
-    //MostrarArchDatos("Datos.dat");
-    //mostrarArchEsp("especificaciones.dat");
+    vectorOrdenarSeleccion(&vecDatos, cmpDatosP6);
+    calcularVarianzayDesvio(&vecDatos);
+    vectorEliminar(&vecDatos);
+    vectorEliminar(&vecEsp);
     return 0;
 }
 
@@ -59,4 +62,16 @@ int cmpEsp(const void*e1, const void*e2)
     Especificaciones* dato2 = (Especificaciones*)e2;
     int res=(dato1->codProd) - (dato2->codProd);
     return(res);
+}
+
+bool errorFatal(int cod)
+{
+    switch(cod)
+    {
+    case ERR_LINEA_LARGA:
+        printf("Hola");
+        return true;
+    }
+
+    return false;
 }
