@@ -427,36 +427,145 @@ int mostrarPunto5()
     return TODO_OK;
 }
 //PUNTO 6
+//PUNTO 6
 int calcularVarianzayDesvio(const Vector* vec)
 {
-    Datos *ini,*u;
+    Datos *ini,*u,*i,*limsup;
     ini = (Datos*)vec->vec;
     u = ini + vec->ce;
-    float sumaprecios = 0,sumacuadr = 0,promedioMes = 0,varianzaMes = 0,desv;
-    int  mesact = ini->mes,cont = 0;
-    int numFormActual = ini->numForm;
+    float sumacuadr = 0,prom = 0,varianzaMes = 0,desv;
+    int  mesact = ini->mes,cont = 0,k,numFormSiguiente,band=0, *numFormActual;;
+    Vector vecNF;
+
+    ////Vector que me va a almacenar todos los Numeros de formularios que posea cada mes, y la cant de NF////
+    vectorCrear(&vecNF,sizeof(int));
+
 
     while(ini < u)
     {
-        while(mesact == ini->mes && numFormActual == ini->numForm)
+        //me devuelve el vector cargado y hasta donde tiene que recorrer(Cuando cambia de mes)
+        limsup=BuscarNuevoMes(ini,u,mesact,&vecNF);
+        numFormActual = vecNF.vec;
+
+
+        ////CantNF = cantidad de veces que tiene que recorrer para calcular todos los NF de cada mes
+        for(k=0;k<vecNF.ce;k++)
         {
-            sumaprecios += ini->precio;
-            sumacuadr += ini->precio * ini->precio;
-            cont++;
-            ini++;
-        }
-        if(cont > 0)
-        {
-            promedioMes = sumaprecios / cont;
-            varianzaMes = (sumacuadr / cont) - (promedioMes * promedioMes);
-            desv = sqrt(varianzaMes);
-            printf("Mes: %d\tNumForm:%d\tVarianza: %.2f\tDesvio estandar: %.2f\n", mesact,numFormActual,varianzaMes, desv);
-        }
+             sumacuadr=0;
+             cont=0;
+             i=ini;
+             band=0;
+
+             prom=calcularPromedio2(mesact,*numFormActual,i);
+
+              while(i<limsup)
+              {
+                        if(*(numFormActual) == i->numForm)
+                        {
+                            sumacuadr += pow(i->precio - prom,2);
+                            cont++;
+                        }
+
+                    i++;
+                }
+
+                    varianzaMes = sumacuadr/(cont);
+                    desv = sqrt(varianzaMes);
+                    printf("Mes:%-10d\tNumForm:%-10d\tVarianza:%.2f\t\tDesvio estandar:%.2f\n", mesact,*(numFormActual),varianzaMes, desv);
+                    numFormActual ++;
+         }
+        ////Cuando cambio de mes, puedo tener distintos numeros de formularios////
+         vectorVaciar(&vecNF);
+         ini = limsup;
          mesact = ini->mes;
-         numFormActual = ini->numForm;
-    }
+     }
     return TODO_OK;
 }
+
+void vectorVaciar(Vector* v)
+{
+    v->ce = 0;
+    redimensionarVector(v, CAP_INI);
+}
+
+bool redimensionarVector(Vector* v, size_t nuevaCap)
+{
+    void* nVec = realloc(v->vec, nuevaCap * v->tamElem);
+
+    if(!nVec)
+    {
+       return false;
+    }
+
+    v->vec = nVec;
+
+
+
+    v->cap = nuevaCap;
+    return true;
+}
+
+
+Datos* BuscarNuevoMes(Datos* ini,Datos* u, int mesact, Vector *vecNF)
+{
+    Datos *i=ini;
+
+    while(i<u && i->mes==mesact)
+    {
+        ////Me recorre hasta donde estoy parada, si el num de form ya existia antes devuelve un 1, si devuelve 0 es un nuevo NF///
+       if(BuscarSiYaExistia(i->numForm,ini,i)==0)
+        {
+            vectorInsertar(vecNF,&(i->numForm));
+        }
+
+        i++;
+    }
+
+    return i;
+}
+
+int BuscarSiYaExistia(int dato,Datos* limInf, Datos* limSup)
+{
+    int band=0;
+    Datos* i=limInf;
+
+    while(i<limSup && band==0)
+    {
+          if(i->numForm==dato)
+          {
+              band=1;
+          }
+          i++;
+    }
+
+    return band;
+}
+
+
+float calcularPromedio2(int mesact,int formact,Datos* i)
+{
+    float sumaprecios=0,cont=0,promedio;
+
+    while(mesact == i->mes)
+    {
+        if(formact==i->numForm)
+        {
+            sumaprecios += i->precio;
+
+            cont++;
+        }
+
+        i++;
+    }
+        if(cont > 0)
+        {
+            promedio=sumaprecios/cont;
+        }
+
+    return promedio;
+}
+
+
 //PUNTO 7
 void calcularMedidaGeometrica(const Vector* vecDatos,const Vector* vecEsp)
 {
