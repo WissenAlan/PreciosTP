@@ -70,5 +70,10 @@ void vectorMostrarEsp(const Vector*);
 void vectorMostrarDatos(const Vector*);
 void buscarNombre(const Vector* vec,const int codBuscar, char* nombreExp);
 void calcularMedidaGeometrica(const Vector* vecDatos,const Vector* vecEsp);
+float calcularPromedio2(int mesact,int formact,Datos* ini);
+int BuscarSiYaExistia(int dato,Datos* limInf, Datos* limSup);
+Datos* BuscarNuevoMes(Datos* ini,Datos* u, int mesact, Vector *vecNF);
+void vectorVaciar(Vector* v);
+bool redimensionarVector(Vector* v, size_t nuevaCap);
 
 #endif // FUNCIONES_H_INCLUDED
