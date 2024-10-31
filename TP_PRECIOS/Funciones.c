@@ -370,35 +370,32 @@ int calcularPromedio(const Vector* vecDatos,const Vector* vecEsp, const int vecP
 
     int indice = 0;
     float matriz[12][2] = {0};
-    bool flag = 1;
+    bool flag = 0;
     char nombreProd[TAM_NOM];
 
     Datos* i = vecDatos->vec;
-    const Datos* ult = vecDatos->vec + vecDatos->ce*vecDatos->tamElem;
+    const Datos* ult = vecDatos->vec + vecDatos->ce*vecDatos->tamElem - vecDatos->tamElem;
     while(i <= ult)
     {
         if(i->codProd == vecPunto5[indice])
         {
-            matriz[i->mes][0] += i->precio;
-            matriz[i->mes][1]++;
-            if(flag == 1)//Busca el nombre la primera vez
-                buscarNombre(vecEsp, i->codProd, nombreProd);
-            flag = 0;//Deshabilita la busqueda de nombre
+            matriz[i->mes-1][0] += i->precio;
+            matriz[i->mes-1][1]++;
+            flag=1;
         }
-        else if(i->codProd != vecPunto5[indice] || i++ > ult)//Si no coinciden los codigos, o si no hay proximo en el vector
+        if((i->codProd != vecPunto5[indice] || i + 1 > ult) && flag)//Si no coinciden los codigos, o si no hay proximo en el vector
         {
-            if(flag == 0)
-            {
-                flag = 1;//Habilita la busqueda de nombre
-                indice++;//Aumenta el indice para la proxima vuelta
+            if(i + 1 <= ult)
                 i--;//Vuelve uno atras para hacer la impresion por pantalla
-            }
+            buscarNombre(vecEsp, i->codProd, nombreProd);
+            flag = 0;//Habilita la busqueda de nombre
+            indice++;//Aumenta el indice para la proxima vuelta
             for(int j = 0;j < 12;j++)//Hasta que j sea menor a 12 por los 12 meses del año
             {
                 if(matriz[j][1] > 0)//Imprime solo si hay algo en la matriz
                 {
                     matriz[j][0] = matriz[j][0] / matriz[j][1];//Calculo del promedio
-                    fprintf(pf,"%d|%d|%g|%g|%s\n",j,i->codProd,matriz[j][0],matriz[j][1],nombreProd);//Carga la linea al archivo
+                    fprintf(pf,"%d|%d|%g|%g|%s\n",j+1,i->codProd,matriz[j][0],matriz[j][1],nombreProd);//Carga la linea al archivo
                     //Resetea la posicion
                     matriz[j][0] = 0;
                     matriz[j][1] = 0;
@@ -426,7 +423,6 @@ int mostrarPunto5()
     fclose(pf);
     return TODO_OK;
 }
-//PUNTO 6
 //PUNTO 6
 int calcularVarianzayDesvio(const Vector* vec)
 {
@@ -569,27 +565,28 @@ float calcularPromedio2(int mesact,int formact,Datos* i)
 //PUNTO 7
 void calcularMedidaGeometrica(const Vector* vecDatos,const Vector* vecEsp)
 {
-    const Datos *ult = vecDatos->vec + vecDatos->ce*vecDatos->tamElem;
+    const Datos *ult = vecDatos->vec + vecDatos->ce*vecDatos->tamElem - vecDatos->tamElem;
     char nombre[TAM_NOM];
     float acum = 0;
     int codAux = 0,cont = 0;
-    for(Datos *i = vecDatos->vec; i < ult; i++)
+    for(Datos *i = vecDatos->vec; i <= ult; i++)
     {
-        if(codAux == 0 || codAux == i->codProd)
+        if(!codAux || codAux == i->codProd)
         {
-            if(codAux == 0)
+            if(!codAux)
                 codAux = i->codProd;
             acum += log(i->precio);
             cont++;
         }
-        else
+        if(codAux != i->codProd || i + 1 > ult)
         {
             buscarNombre(vecEsp,codAux,nombre);
             printf("%-10d\t%-50s\t%g\n",codAux,nombre,exp(acum/cont));
             acum = 0;
             cont = 0;
             codAux = 0;
-            i--;
+            if(i + 1 <= ult)
+                i--;
         }
     }
 }

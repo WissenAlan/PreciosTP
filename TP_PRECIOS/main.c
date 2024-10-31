@@ -22,19 +22,19 @@ int main(int argc,char* argv[])
     //mostrarArchEsp("especificaciones.dat");
     vectorOrdenarSeleccion(&vecDatos, cmpDatos);
     vectorOrdenarInsercion(&vecEsp,cmpEsp);
-    vectorMostrarEsp(&vecEsp);
+//    vectorMostrarEsp(&vecEsp);
     ///////////////////////////////////////////
     //////////////////////////////////////////////
-    vectorMostrarDatos(&vecDatos);
-    crearArchSinPrecio(&vecDatos,&vecEsp);
-    printf("\nARCHIVO SIN PRECIOS\n\n");
-    mostrarArchEsp("sinprecios.dat");
+    //vectorMostrarDatos(&vecDatos);
+//    crearArchSinPrecio(&vecDatos,&vecEsp);
+//    printf("\nARCHIVO SIN PRECIOS\n\n");
+//    mostrarArchEsp("sinprecios.dat");
     calcularPromedio(&vecDatos,&vecEsp, punto5);
     mostrarPunto5();
     calcularMedidaGeometrica(&vecDatos,&vecEsp);
     /////Ordenado por mes y nro de formulario/////
-    vectorOrdenarSeleccion(&vecDatos, cmpDatosP6);
-    calcularVarianzayDesvio(&vecDatos);
+//    vectorOrdenarSeleccion(&vecDatos, cmpDatosP6);
+//    calcularVarianzayDesvio(&vecDatos);
     vectorEliminar(&vecDatos);
     vectorEliminar(&vecEsp);
     return 0;
