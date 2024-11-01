@@ -69,7 +69,6 @@ bool errorFatal(int cod)
     switch(cod)
     {
     case ERR_LINEA_LARGA:
-        printf("Hola");
         return true;
     }
 
