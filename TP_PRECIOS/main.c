@@ -53,7 +53,13 @@ int cmpDatos(const void* e1, const void* e2){
 int cmpDatosP6(const void* e1, const void* e2){
     Datos* dato1 = (Datos*)e1;
     Datos* dato2 = (Datos*)e2;
-    return dato1->mes-dato2->mes;
+
+    if(dato1->mes != dato2->mes)
+    {
+        return dato1->mes - dato2->mes;
+    }
+
+    return dato1->numForm-dato2->numForm;
 }
 
 int cmpEsp(const void*e1, const void*e2)
