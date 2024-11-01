@@ -1,5 +1,6 @@
 #ifndef FUNCIONES_H_INCLUDED
 #define FUNCIONES_H_INCLUDED
+#define ERR_MEM 2
 #define ERROR_ARCH 1
 #define TODO_OK 0
 #define ERR_LINEA_LARGA 3
@@ -18,23 +19,27 @@
 #define SIN_MEM 6
 #include <math.h>
 
-typedef int (*Cmp) (const void*e1, const void*e2);
-typedef bool (*ErrorFatal)(int cod);
+typedef int (*Cmp)(const void *e1, const void *e2);
 
-typedef struct{
+typedef int (*TxtABin)(char *linea, void *reg);
+typedef bool (*ErrorFatal)(const int cod);
+
+typedef struct
+{
     int anio;
     int mes;
     int codEmpresa;
     int codProd;
     float precio;
     int numForm;
-}Datos;
+} Datos;
 
-typedef struct{
+typedef struct
+{
     int codProd;
     char nombreProd[TAM_NOM];
     char especifProd[TAM_ESP];
-}Especificaciones;
+} Especificaciones;
 
 typedef struct
 {
@@ -42,38 +47,34 @@ typedef struct
     size_t ce;
     size_t cap;
     size_t tamElem;
-}Vector;
+} Vector;
 
-int pasarDatosTxtABin(const char* NombreArch, Vector*,ErrorFatal errorFatal); //Tambien carga el vector de datos
-int pasarEspecificacionesTxtABin(const char* NombreArch, Vector*,ErrorFatal errorFatal);
-int leerLinea(Datos *datos,char* Linea);
-int leerLineaEsp(Especificaciones *esp,char* Linea);
-int mostrarArchDatos(const char* NombreArchBin);
-void mostrarArchEsp(const char* NombreArch);
+int archivoTxtABin(const char *nomArchTxt, const char *nomArchBin, size_t tamReg, TxtABin txtABin, ErrorFatal errorFatal, Vector *vec);
 
-int crearArchSinPrecio(const Vector*, const Vector*);
-int buscarSinPrecio(const void*,const Vector*);
+int mostrarArchDatos(const char *NombreArchBin);
+void mostrarArchEsp(const char *NombreArch);
 
-void normalizarCadena(char* cad);
-int calcularPromedio(const Vector*,const Vector*,const int[]);
-int calcularVarianzayDesvio(const Vector*);
-int mostrarPunto5();
+int crearArchSinPrecio(const Vector *, const Vector *);
+int buscarSinPrecio(const void *, const Vector *);
+void normalizarCadena(char *cad);
+int calcularPromedio(const Vector *, const Vector *, const int[], Cmp cmpDatos);
+int calcularVarianzayDesvio(const Vector *, Cmp cmpMesyNumForm);
+void calcularMediaGeometrica(const Vector *vecDatos, const Vector *vecEsp, Cmp cmpDatos);
+float calcularPromedio2(int mesact, int formact, Datos *ini);
 
-int vectorInsertar(Vector* Vec, void* elem);
+int vectorInsertar(Vector *Vec, void *elem);
 bool vectorCrear(Vector *vec, size_t tamanioElemento);
-void vectorEliminar(Vector* vec);
-void vectorMostrar(const Vector*);
-void vectorOrdenarSeleccion(const Vector*, const Cmp);
-void intercambiar(void* ant, void* sig, const size_t);
-void vectorOrdenarInsercion(const Vector *vec,const Cmp);
-void vectorMostrarEsp(const Vector*);
-void vectorMostrarDatos(const Vector*);
-void buscarNombre(const Vector* vec,const int codBuscar, char* nombreExp);
-void calcularMedidaGeometrica(const Vector* vecDatos,const Vector* vecEsp);
-float calcularPromedio2(int mesact,int formact,Datos* ini);
-int BuscarSiYaExistia(int dato,Datos* limInf, Datos* limSup);
-Datos* BuscarNuevoMes(Datos* ini,Datos* u, int mesact, Vector *vecNF);
-void vectorVaciar(Vector* v);
-bool redimensionarVector(Vector* v, size_t nuevaCap);
+void vectorEliminar(Vector *vec);
+void vectorMostrar(const Vector *);
+void vectorOrdenarSeleccion(const Vector *, const Cmp);
+void intercambiar(void *ant, void *sig, const size_t);
+void vectorOrdenarInsercion(const Vector *vec, const Cmp);
+void vectorMostrarEsp(const Vector *);
+void vectorMostrarDatos(const Vector *);
+void buscarNombre(const Vector *vec, const int codBuscar, char *nombreExp);
+int BuscarSiYaExistia(int dato, Datos *limInf, Datos *limSup);
+Datos *BuscarNuevoMes(Datos *ini, Datos *u, int mesact, Vector *vecNF);
+void vectorVaciar(Vector *v);
+bool redimensionarVector(Vector *v, size_t nuevaCap);
 
 #endif // FUNCIONES_H_INCLUDED
