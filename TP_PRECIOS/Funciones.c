@@ -475,6 +475,7 @@ int calcularVarianzayDesvio(const Vector* vec)
          ini = limsup;
          mesact = ini->mes;
      }
+    vectorEliminar(&vecNF);
     return TODO_OK;
 }
 
